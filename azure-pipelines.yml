@@ -60,7 +60,7 @@ stages:
               sptoken: $(sptoken)
               project: $(project)
 
-  - stage: ReadKeyVault
+  - stage: ReadKeyVault # Do we need this section? As APIM gateways authenticate users mostly using subscription keys or certificate thumbprints.
     displayName: 'ReadKeyVault'
     condition: contains('${{ parameters.Run_Stage }}', 'Deploy')
     jobs:
@@ -121,7 +121,7 @@ stages:
               subscriptionName: $(subscriptionName)
               sptoken: $(sptoken)
 
-  - stage: Managed_Identity
+  - stage: Managed_Identity # Do we need this section for APIM
     displayName: 'Managed_Identity'
     condition: contains('${{ parameters.Run_Stage }}', 'Managed_Identity')
     jobs:
