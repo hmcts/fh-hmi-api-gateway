@@ -1,54 +1,78 @@
-locals {
-  s2sUrl = "http://rpe-service-auth-provider-${var.env}.service.core-compute-${var.env}.internal"
-  # list of the thumbprints of the SSL certificates that should be accepted by the API (gateway)
-  thumbprints_in_quotes = "${formatlist("&quot;%s&quot;", var.api_gateway_test_certificate_thumbprints)}"
-  thumbprints_in_quotes_str = "${join(",", local.thumbprints_in_quotes)}"
-  api_policy = "${replace(file("template/api-policy.xml"), "ALLOWED_CERTIFICATE_THUMBPRINTS", local.thumbprints_in_quotes_str)}"
-  api_base_path = "future-hearings-api"
-  dummy = "dummy"
-}
-data "azurerm_key_vault" "fh_hmi_key_vault" { //assuming here that the name of the key vault is fh_hmi_key_vault
-  name = "fh-${var.env}" //assuming here that the name starts with 'fh'
-  resource_group_name = "fh-${var.env}" //assuming here that the name of the rg starts with 'fh'
+provider "azurerm" {
+  features {}
 }
 
-data "azurerm_key_vault_secret" "s2s_client_secret" {
-  name = "gateway-s2s-client-secret"
-  vault_uri = "${data.azurerm_key_vault.fh_hmi_key_vault.vault_uri}"
+resource "azurerm_resource_group" "rg" {
+  name     = "${var.prefix}-resources"
+  location = var.location
 }
 
-data "azurerm_key_vault_secret" "s2s_client_id" {
-  name = "gateway-s2s-client-id"
-  vault_uri = "${data.azurerm_key_vault.fh_hmi_key_vault.vault_uri}"
-}
-
-data "template_file" "policy_template" {
-  template = "${file("${path.module}/template/api-policy.xml")}"
-
-  vars {
-    allowed_certificate_thumbprints = "${local.thumbprints_in_quotes_str}"
-    s2s_client_id = "${data.azurerm_key_vault_secret.s2s_client_id.value}"
-    s2s_client_secret = "${data.azurerm_key_vault_secret.s2s_client_secret.value}"
-    s2s_base_url = "${local.s2sUrl}"
+resource "azurerm_api_management" "apim_service" {
+  name                = "${var.prefix}-apim-service"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  publisher_name      = "Example Publisher"
+  publisher_email     = "publisher@example.com"
+  sku_name            = "Developer_1"
+  tags = {
+    Environment = "Example"
+  }
+  policy {
+    xml_content = <<XML
+    <policies>
+      <inbound />
+      <backend />
+      <outbound />
+      <on-error />
+    </policies>
+XML
   }
 }
 
-data "template_file" "api_template" {
-  template = "${file("${path.module}/template/api.json")}"
-}
-resource "azurerm_template_deployment" "api" {
-  template_body       = "${data.template_file.api_template.rendered}"
-  name                = "${var.product}-api-${var.env}"
-  deployment_mode     = "Incremental"
-  resource_group_name = "core-infra-${var.env}"
-  count               = "${var.env != "preview" ? 1: 0}"
-
-  parameters = {
-    apiManagementServiceName  = "core-api-mgmt-${var.env}" // Needs to as per the name of out management service
-    apiName                   = "${var.product}-api"
-    apiProductName            = "${var.product}"
-    serviceUrl                = "http://future-hearings-api-${var.env}.service.core-compute-${var.env}.internal" // assuming this is the nomenclature followed for the backend api
-    apiBasePath               = "${local.api_base_path}"
-    policy                    = "${data.template_file.policy_template.rendered}"
+resource "azurerm_api_management_api" "api" {
+  name                = "${var.prefix}-api"
+  resource_group_name = azurerm_resource_group.rg.name
+  api_management_name = azurerm_api_management.apim_service.name
+  revision            = "1"
+  display_name        = "${var.prefix}-api"
+  path                = "example"
+  protocols           = ["https", "http"]
+  description         = "An example API"
+  import {
+    content_format = var.open_api_spec_content_format
+    content_value  = var.open_api_spec_content_value
   }
+}
+
+resource "azurerm_api_management_product" "product" {
+  product_id            = "${var.prefix}-product"
+  resource_group_name   = azurerm_resource_group.rg.name
+  api_management_name   = azurerm_api_management.apim_service.name
+  display_name          = "${var.prefix}-product"
+  subscription_required = true
+  approval_required     = false
+  published             = true
+  description           = "An example Product"
+}
+
+resource "azurerm_api_management_group" "group" {
+  name                = "${var.prefix}-group"
+  resource_group_name = azurerm_resource_group.rg.name
+  api_management_name = azurerm_api_management.apim_service.name
+  display_name        = "${var.prefix}-group"
+  description         = "An example group"
+}
+
+resource "azurerm_api_management_product_api" "product_api" {
+  resource_group_name = azurerm_resource_group.rg.name
+  api_management_name = azurerm_api_management.apim_service.name
+  product_id          = azurerm_api_management_product.product.product_id
+  api_name            = azurerm_api_management_api.api.name
+}
+
+resource "azurerm_api_management_product_group" "product_group" {
+  resource_group_name = azurerm_resource_group.rg.name
+  api_management_name = azurerm_api_management.apim_service.name
+  product_id          = azurerm_api_management_product.product.product_id
+  group_name          = azurerm_api_management_group.group.name
 }
