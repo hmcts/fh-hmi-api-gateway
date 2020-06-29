@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
-resource "azurerm_api_management" "apim_service" {
+resource "azurerm_api_management" "apim_service" { # We can decide on a more meaninful name in line with Future Hearings project
   name                = "${var.prefix}-apim-service"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -29,7 +29,7 @@ XML
   }
 }
 
-resource "azurerm_api_management_api" "api" {
+resource "azurerm_api_management_api" "api" { # We can decide on a more meaninful api name
   name                = "${var.prefix}-api"
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api" "api" {
   }
 }
 
-resource "azurerm_api_management_product" "product" {
+resource "azurerm_api_management_product" "product" { # We can decide on a more meaninful product name
   product_id            = "${var.prefix}-product"
   resource_group_name   = azurerm_resource_group.rg.name
   api_management_name   = azurerm_api_management.apim_service.name
@@ -55,7 +55,7 @@ resource "azurerm_api_management_product" "product" {
   description           = "An example Product"
 }
 
-resource "azurerm_api_management_group" "group" { # this may not be required
+resource "azurerm_api_management_group" "group" { # this may not be required. Can remove this after speaking to devops team
   name                = "${var.prefix}-group"
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
@@ -63,14 +63,14 @@ resource "azurerm_api_management_group" "group" { # this may not be required
   description         = "An example group"
 }
 
-resource "azurerm_api_management_product_api" "product_api" { # this may not be required
+resource "azurerm_api_management_product_api" "product_api" { # this may not be required. Can remove this after speaking to devops team
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
   product_id          = azurerm_api_management_product.product.product_id
   api_name            = azurerm_api_management_api.api.name
 }
 
-resource "azurerm_api_management_product_group" "product_group" { # this may not be required
+resource "azurerm_api_management_product_group" "product_group" { # this may not be required. Can remove this after speaking to devops team
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
   product_id          = azurerm_api_management_product.product.product_id

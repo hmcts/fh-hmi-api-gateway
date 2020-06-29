@@ -39,6 +39,7 @@ variables:
   - name: gaserviceconnection
     value: $(gaconnection)
 
+# Need to clarify with devops/PE team, where are the below marked config files defined (# where is this defined ?)
 
 stages:
 
@@ -48,7 +49,7 @@ stages:
     jobs:
       - job: Genesis
         steps:
-          - template: pipeline-steps/genesis.yaml
+          - template: pipeline-steps/genesis.yaml # Where is this defined ?
             parameters:
               gaserviceconnection: $(gaserviceconnection)
               service: $(service)
@@ -65,7 +66,7 @@ stages:
     jobs:
       - job: ReadKeyVault
         steps:
-          - template: pipeline-steps/keyvault-read.yaml
+          - template: pipeline-steps/keyvault-read.yaml # Where is this  defined ?
             parameters:
               serviceConnection: $(serviceConnection)
               keyvaultName: $(keyvaultName)
@@ -77,7 +78,7 @@ stages:
     jobs:
       - job: DeployInfrastructure
         steps:
-          - template: pipeline-steps/deploy-service.yaml
+          - template: pipeline-steps/deploy-service.yaml # Where is this defined ?
             parameters:
               service: $(service)
               environment: $(environment)
@@ -93,7 +94,7 @@ stages:
     jobs:
       - job: DestroyInfrastructure
         steps:
-          - template: pipeline-steps/destroy-service.yaml
+          - template: pipeline-steps/destroy-service.yaml # Where is this defined ?
             parameters:
               service: $(service)
               environment: $(environment)
@@ -109,7 +110,7 @@ stages:
     jobs:
       - job: BootStrap
         steps:
-          - template: pipeline-steps/bootstrap.yaml
+          - template: pipeline-steps/bootstrap.yaml # Where is this defined ?
             parameters:
               serviceBootstrap: $(serviceBootstrap)
               environment: $(environment)
@@ -126,7 +127,7 @@ stages:
     jobs:
       - job: Managed_Identity
         steps:
-          - template: pipeline-steps/managed_identity.yaml
+          - template: pipeline-steps/managed_identity.yaml # Where is this defined ?
             parameters:
               gaserviceconnection: $(gaserviceconnection)
               serviceConnection: $(serviceConnection)
