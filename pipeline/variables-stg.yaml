@@ -6,9 +6,9 @@ variables:
   dns_zone_name: 'shared-services.uk.south.stg.hmcts.internal'
   dns_resource_group: 'shared-services_stg_network_resource_group'
   address_space: '10.50.11.32/28'
-  num_applications: 2000
-  ws_name: 'hmcts-nonprod'
-  ws_rg: 'oms-automation'
-  ws_sub_name: 'DCD-CNP-DEV'
+  num_applications: <n>
+  ws_name: '<ws_name>'
+  ws_rg: '<ws_rg>'
+  ws_sub_name: '<ws_sub_name>'
   api_gateway_test_certificate_thumbprints: ["B1BF8007527F85085D7C4A3DC406A9A6D124D721","13D1848E8B050CE55E4D41A35A60FF4A17E686A6", "B1C45E55A1E93AD43A473972CFF490722EEF1E38"]
   # Need to confirm on the format for the above array

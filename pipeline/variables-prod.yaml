@@ -5,10 +5,10 @@ variables:
   kv_name_prefix : 'cft-apps'
   dns_zone_name: 'shared-services.uk.south.prod.hmcts.internal'
   dns_resource_group: 'shared-services_prod_network_resource_group'
-  address_space: '10.50.11.48/28'
-  num_applications: 2000
+  address_space: '<ip address>'
+  num_applications: <n>
   ws_name: 'hmcts-prod'
-  ws_rg: '<prod_resource_group_name>'
-  ws_sub_name: '<prod_subscription_name>'
+  ws_rg: '<backend_prod_resource_group_name>'
+  ws_sub_name: '<backend_prod_subscription_name>'
   api_gateway_test_certificate_thumbprints: ["B1BF8007527F85085D7C4A3DC406A9A6D124D721","13D1848E8B050CE55E4D41A35A60FF4A17E686A6", "B1C45E55A1E93AD43A473972CFF490722EEF1E38"]
   # Need to confirm on the format for the above array
