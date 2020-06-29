@@ -25,4 +25,4 @@ steps:
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: '${{ parameters.product }}${{ parameters.env }}terraform'
       backendAzureRmContainerName: ${{ parameters.containerName }}
-      backendAzureRmKey: '${{ parameters.locationEng }}/${{ parameters.env }}/application/01-${{ parameters.product }}-audio-ingress/terraform.tfstate'
+      backendAzureRmKey: '${{ parameters.locationEng }}/${{ parameters.env }}/application/01-${{ parameters.product }}-fh-hmi-api-gateway/terraform.tfstate'

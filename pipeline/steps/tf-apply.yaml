@@ -18,13 +18,13 @@ parameters:
 
 steps:
   - task: AzureCLI@2
-    displayName: Accept Terms of Wowza VM in Marketplace
+    displayName: Accept Terms of FH HMI VM in Marketplace
     inputs:
       azureSubscription: '${{ parameters.subscriptionName }}'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        az vm image terms accept --urn ${{ parameters.fh_hmi_publisher }}:${{ parameters.wowza_offer }}:${{ parameters.wowza_sku }}:${{ parameters.wowza_version }}
+        az vm image terms accept --urn ${{ parameters.fh_hmi_publisher }}:${{ parameters.fh_hmi_offer }}:${{ parameters.fh_hmi_sku }}:${{ parameters.fh_hmi_version }}
   - task: TerraformCLI@0
     displayName: Apply
     inputs:
