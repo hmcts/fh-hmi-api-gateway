@@ -55,7 +55,7 @@ resource "azurerm_api_management_product" "product" {
   description           = "An example Product"
 }
 
-resource "azurerm_api_management_group" "group" {
+resource "azurerm_api_management_group" "group" { # this may not be required
   name                = "${var.prefix}-group"
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
@@ -63,14 +63,14 @@ resource "azurerm_api_management_group" "group" {
   description         = "An example group"
 }
 
-resource "azurerm_api_management_product_api" "product_api" {
+resource "azurerm_api_management_product_api" "product_api" { # this may not be required
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
   product_id          = azurerm_api_management_product.product.product_id
   api_name            = azurerm_api_management_api.api.name
 }
 
-resource "azurerm_api_management_product_group" "product_group" {
+resource "azurerm_api_management_product_group" "product_group" { # this may not be required
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
   product_id          = azurerm_api_management_product.product.product_id

@@ -13,7 +13,7 @@ parameters:
 steps:
   - task: AzurePowerShell@5
     inputs:
-      azureSubscription: 'DTS-HMI-SBOX'
+      azureSubscription: '${{ parameters.subscriptionName}}'
       ScriptType: 'InlineScript'
       Inline: |
         $Context = Get-AzContext
