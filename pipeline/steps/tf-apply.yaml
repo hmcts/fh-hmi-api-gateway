@@ -1,0 +1,33 @@
+parameters:
+  - name: subscriptionName
+    type: string
+  - name: env
+    type: string
+  - name: fh_hmi_sku # Do we need this? TBC with devops
+    type: string
+    default: 'linux-paid'
+  - name: fh_hmi_version
+    type: string
+    default: '4.8.0'
+  - name: fh_hmi_publisher # Do we need this? TBC with devops
+    type: string
+    default: 'fh_hmi'
+  - name: fh_hmi_offer # Do we need this? TBC with devops
+    type: string
+    default: 'fh_hmi_gateway_engine'
+
+steps:
+  - task: AzureCLI@2
+    displayName: Accept Terms of FH HMI VM in Marketplace
+    inputs:
+      azureSubscription: '${{ parameters.subscriptionName }}'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az vm image terms accept --urn ${{ parameters.fh_hmi_publisher }}:${{ parameters.fh_hmi_offer }}:${{ parameters.fh_hmi_sku }}:${{ parameters.fh_hmi_version }}
+  - task: TerraformCLI@0
+    displayName: Apply
+    inputs:
+      command: 'apply'
+      environmentServiceName: ${{ parameters.subscriptionName }}
+      commandOptions: '${{ parameters.env }}.tfplan -no-color'
