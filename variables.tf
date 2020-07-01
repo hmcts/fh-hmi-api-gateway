@@ -1,5 +1,6 @@
 variable "prefix" {
   description = "The prefix which should be used for all resources"
+  default = "fh_hmi"
 }
 
 
@@ -13,7 +14,7 @@ variable "open_api_spec_content_value" {
 
 variable "product" {
   type = "string"
-  default = "hmi"
+  default = "future_hearings"
 }
 
 variable "location" {
@@ -24,6 +25,7 @@ variable "location" {
 
 variable "env" {
   type = "string"
+  default = "sbox"
 }
 
 variable "tenant_id" {

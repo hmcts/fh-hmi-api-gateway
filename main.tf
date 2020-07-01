@@ -7,16 +7,15 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
-resource "azurerm_api_management" "apim_service" { # We can decide on a more meaninful name in line with Future Hearings project
+resource "azurerm_api_management" "apim_service" {
   name                = "${var.prefix}-apim-service"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
   publisher_name      = "<Publisher Name>" # Need to check with devops whether this property is required or not
   publisher_email     = "<publisher email id>" # Need to check with devops whether this property is required or not
-  policy              = "${file("${path.module}/template/api-policy.xml")}"
 }
 
-resource "azurerm_api_management_api" "api" { # We can decide on a more meaninful api name
+resource "azurerm_api_management_api" "api" {
   name                = "${var.prefix}-api"
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
@@ -24,6 +23,7 @@ resource "azurerm_api_management_api" "api" { # We can decide on a more meaninfu
   display_name        = "${var.prefix}-api"
   path                = "future-hearings-api"
   protocols           = ["https", "http"]
+  policy              = "${file("${path.module}/template/api-policy.xml")}"
   description         = "<API Description>"# will add in accordance with the backend API which we are mocking.
   import {
     content_format = var.open_api_spec_content_format
