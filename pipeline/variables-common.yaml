@@ -1,13 +1,9 @@
 variables:
   locationEng: 'UK South' # add coalese
   location: 'uksouth' # add coalese
-  fh_hmi_sku: 'linux-paid'
-  fh_hmi_version: '<version_number>'
-  fh_hmi_publisher: 'fh_hmi'
-  fh_hmi_offer: 'fh_hmi'
   product: 'fh_hmi_<product_name>'
   builtFrom: 'https://github.com/hmcts/fh-hmi-api-gateway'
-  api_gateway_test_certificate_thumbprints: ["B1BF8007527F85085D7C4A3DC406A9A6D124D721","13D1848E8B050CE55E4D41A35A60FF4A17E686A6", "B1C45E55A1E93AD43A473972CFF490722EEF1E38"]
+  #api_gateway_test_certificate_thumbprints: ["B1BF8007527F85085D7C4A3DC406A9A6D124D721","13D1848E8B050CE55E4D41A35A60FF4A17E686A6", "B1C45E55A1E93AD43A473972CFF490722EEF1E38"]
   # Need to confirm on the format for the above array
 
   # Some of the above variables don't seem to be required for creating an API Management instance e.g. sku, publisher, offer, etc.

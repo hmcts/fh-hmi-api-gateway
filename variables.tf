@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "The prefix which should be used for all resources in this example"
+  description = "The prefix which should be used for all resources"
 }
 
 
@@ -17,7 +17,7 @@ variable "product" {
 }
 
 variable "location" {
-  description = "The Azure Region in which all resources in this example should be created."
+  description = "The Azure Region in which all resources should be created."
   type    = "string"
   default = "UK South"
 }
@@ -30,13 +30,11 @@ variable "tenant_id" {
   description = "(Required) The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. This is usually sourced from environemnt variables and not normally required to be specified."
 }
 
-variable "jenkins_AAD_objectId" {
-  description = "(Required) The Azure AD object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies."
-}
 
 # thumbprint of the SSL certificate for API gateway tests
-variable api_gateway_test_certificate_thumbprints {
-  type = "list"
+# This will be required if the front end client authenticates using certificate thumbprint
+#variable api_gateway_test_certificate_thumbprints {
+#  type = "list"
   # TODO: remove default and provide environment-specific values
-  default = []
-}
+#  default = []
+#}

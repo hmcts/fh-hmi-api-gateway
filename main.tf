@@ -11,22 +11,9 @@ resource "azurerm_api_management" "apim_service" { # We can decide on a more mea
   name                = "${var.prefix}-apim-service"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
-  publisher_name      = "Example Publisher"
-  publisher_email     = "publisher@example.com"
-  sku_name            = "Developer_1"
-  tags = {
-    Environment = "Example"
-  }
-  policy {
-    xml_content = <<XML
-    <policies>
-      <inbound />
-      <backend />
-      <outbound />
-      <on-error />
-    </policies>
-XML
-  }
+  publisher_name      = "<Publisher Name>" # Need to check with devops whether this property is required or not
+  publisher_email     = "<publisher email id>" # Need to check with devops whether this property is required or not
+  policy              = "${file("${path.module}/template/api-policy.xml")}"
 }
 
 resource "azurerm_api_management_api" "api" { # We can decide on a more meaninful api name
@@ -35,9 +22,9 @@ resource "azurerm_api_management_api" "api" { # We can decide on a more meaninfu
   api_management_name = azurerm_api_management.apim_service.name
   revision            = "1"
   display_name        = "${var.prefix}-api"
-  path                = "example"
+  path                = "future-hearings-api"
   protocols           = ["https", "http"]
-  description         = "An example API"
+  description         = "<API Description>"# will add in accordance with the backend API which we are mocking.
   import {
     content_format = var.open_api_spec_content_format
     content_value  = var.open_api_spec_content_value
@@ -52,27 +39,5 @@ resource "azurerm_api_management_product" "product" { # We can decide on a more 
   subscription_required = true
   approval_required     = false
   published             = true
-  description           = "An example Product"
-}
-
-resource "azurerm_api_management_group" "group" { # this may not be required. Can remove this after speaking to devops team
-  name                = "${var.prefix}-group"
-  resource_group_name = azurerm_resource_group.rg.name
-  api_management_name = azurerm_api_management.apim_service.name
-  display_name        = "${var.prefix}-group"
-  description         = "An example group"
-}
-
-resource "azurerm_api_management_product_api" "product_api" { # this may not be required. Can remove this after speaking to devops team
-  resource_group_name = azurerm_resource_group.rg.name
-  api_management_name = azurerm_api_management.apim_service.name
-  product_id          = azurerm_api_management_product.product.product_id
-  api_name            = azurerm_api_management_api.api.name
-}
-
-resource "azurerm_api_management_product_group" "product_group" { # this may not be required. Can remove this after speaking to devops team
-  resource_group_name = azurerm_resource_group.rg.name
-  api_management_name = azurerm_api_management.apim_service.name
-  product_id          = azurerm_api_management_product.product.product_id
-  group_name          = azurerm_api_management_group.group.name
+  description           = "Product is an umbrella under which multiple apis can be grouped"
 }
