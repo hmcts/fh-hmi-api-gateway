@@ -32,6 +32,10 @@ variable "tenant_id" {
   description = "(Required) The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. This is usually sourced from environemnt variables and not normally required to be specified."
 }
 
+variable "sku_name" {
+  type = "string"
+  default = "Developer_1"  
+}
 
 # thumbprint of the SSL certificate for API gateway tests
 # This will be required if the front end client authenticates using certificate thumbprint
