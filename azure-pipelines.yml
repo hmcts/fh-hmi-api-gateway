@@ -6,16 +6,16 @@ parameters:
   - name: env
     displayName: Env
     type: string
-    default: sbox
+    default: Choose
     values:
       - sbox
 
 variables:
   - template: pipeline/variables-common.yaml
   - ${{ if eq(parameters.env, 'sbox') }}:
-      # Sandbox (sbox)
-      - template: pipeline/variables-sbox.yaml
-      - group: fh-hmi-sbox
+    # Sandbox (sbox)
+    - template: pipeline/variables-sbox.yaml
+    - group: fh-hmi-sbox
 
 
 stages:
@@ -46,12 +46,15 @@ stages:
             parameters:
               subscriptionName: $(subscriptionName)
               product: $(product)
+              locationEng: $(locationEng)
+              location: $(location)
               env: $(env)
 
           - template: pipeline/steps/tf-plan.yaml
             parameters:
               subscriptionName: $(subscriptionName)
               env: $(env)
+              location: $(location)
               product: $(product)
 
           - template: pipeline/steps/tf-apply.yaml
