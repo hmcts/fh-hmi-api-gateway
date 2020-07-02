@@ -31,7 +31,6 @@ resource "azurerm_api_management_api_policy" "apim-hmi-api-policy" {
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim_service.name
   api_name            = azurerm_api_management_api.api.name
-
 # Set the policy here
   xml_content = file("${path.module}/template/api-policy.xml")
 
