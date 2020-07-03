@@ -9,9 +9,8 @@ trigger:
 variables:
   terraformVersion: 0.12.9
 
-
 stages:
-  - stage: CI
+  - stage: ci_config_check
     displayName: CI - Terraform test
     jobs:
     - template: pipeline/steps/01-config-check.yml
