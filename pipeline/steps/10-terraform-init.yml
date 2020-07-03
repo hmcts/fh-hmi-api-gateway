@@ -24,3 +24,9 @@ jobs:
       backendAzureRmStorageAccountName: ${{ parameters.storageaccount }}
       backendAzureRmContainerName: tfstate
       backendAzureRmKey: hmi/${{ parameters.environment }}.tfstate
+
+  - task: TerraformCLI@0
+    displayName: terraform validate
+    inputs:
+      command: validate
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
