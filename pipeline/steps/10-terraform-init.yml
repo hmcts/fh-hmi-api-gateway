@@ -1,0 +1,26 @@
+jobs:
+
+- job:
+  pool:
+    vmImage: 'ubuntu-latest'
+  timeoutInMinutes: 0
+
+  steps:
+
+  - task: TerraformInstaller@0
+    displayName: Install Terraform ${{ parameters.terraformVersion }}
+    inputs:
+      terraformVersion: ${{ parameters.terraformVersion }}
+
+  - task: TerraformCLI@0
+    displayName: terraform init
+    inputs:
+      command: init
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
+      backendType: azurerm
+      backendServiceArm: ${{ parameters.subscription }}
+      backendAzureRmResourceGroupName: ${{ parameters.resourcegroup }}
+      backendAzureRmResourceGroupLocation: uksouth
+      backendAzureRmStorageAccountName: ${{ parameters.storageaccount }}
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: hmi/${{ parameters.environment }}.tfstate
