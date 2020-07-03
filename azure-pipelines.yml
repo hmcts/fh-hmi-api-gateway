@@ -26,6 +26,6 @@ stages:
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
         environment: 'sbox-hmi'
-        subscription: BTS-SHAREDSERVICES-SBOX
+        subscription: DTS-SHAREDSERVICES-SBOX
         resourcegroup: azure-devops-test
         storageaccount: azuredevopstestsa
