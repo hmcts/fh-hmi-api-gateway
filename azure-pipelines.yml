@@ -22,7 +22,7 @@ stages:
     dependsOn: ci_config_check
     condition: succeeded('ci_config_check')
     jobs:
-    - template: steps/10-terraform-init.yml
+    - template: pipeline/steps/10-terraform-init.yml
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
         environment: 'sbox-hmi'
