@@ -4,7 +4,14 @@
 # https://aka.ms/yaml
 
 trigger:
-- none
+  branches:
+    include:
+      - azure-pipelines-ci
+  paths:
+    exclude:
+      - .git
+      - .gitignore
+      - README.md
 
 steps:
 - task: CopyFiles@2
