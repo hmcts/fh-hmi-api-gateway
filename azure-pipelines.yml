@@ -18,7 +18,7 @@ stages:
         terraformVersion: ${{ variables.terraformVersion }}
 
   - stage: terraform_sbox
-    displayName: CI - Terraform SBOX
+    displayName: CI - Terraform SandBox
     dependsOn: ci_config_check
     condition: succeeded('ci_config_check')
     jobs:
@@ -26,6 +26,6 @@ stages:
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
         environment: 'sbox-hmi'
-        subscription: DTS-HMI-SBOX
+        subscription: DTS-SHAREDSERVICES-SBOX #DTS-HMI-SBOX
         resourcegroup: rg-HMIv1
         storageaccount: azuredevopsboxsa
