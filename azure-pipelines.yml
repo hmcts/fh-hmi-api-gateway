@@ -6,26 +6,15 @@
 trigger:
 - none
 
-variables:
-  terraformVersion: 0.12.9
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    Contents: |
+     template/**
+     scripts/**
+     policy/**
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-stages:
-  - stage: ci_config_check
-    displayName: CI - Terraform test
-    jobs:
-    - template: pipeline/steps/01-config-check.yml
-      parameters:
-        terraformVersion: ${{ variables.terraformVersion }}
-  
-  - stage: terraform_sbox
-    displayName: CI - Terraform SBOX
-    dependsOn: ci_config_check
-    condition: succeeded('ci_config_check')
-    jobs:
-    - template: pipeline/steps/10-terraform.yml
-      parameters:
-        terraformVersion: ${{ variables.terraformVersion }}
-        environment: 'sbox-hmi'
-        subscription: DTS-SHAREDSERVICES-SBOX
-        resourcegroup: azure-devops-test
-        storageaccount: azuredevopstestsa
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
