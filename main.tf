@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "hmi_apim_rg" {
 }
 
 resource "azurerm_api_management" "hmi-apim" {
-  name                = "${var.prefix}-apim-service"
+  name                = "${var.prefix}-apim-svc"
   location            = var.location
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
   sku_name            = var.sku_name
