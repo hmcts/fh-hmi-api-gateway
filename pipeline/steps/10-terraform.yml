@@ -30,3 +30,11 @@ jobs:
     inputs:
       command: validate
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform
+
+  - task: TerraformCLI@0
+    displayName: terraform plan
+    inputs:
+      command: plan
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
+      environmentServiceName: ${{ parameters.subscription }}
+      commandOptions: -var-file="environment/${{ parameters.environment }}.tfvars" -out=tfplan-${{ parameters.environment }}

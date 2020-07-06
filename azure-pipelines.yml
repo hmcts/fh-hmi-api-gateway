@@ -17,12 +17,12 @@ stages:
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
   
-  - stage: terraform_init
-    displayName: CI - Terraform init
+  - stage: terraform_sbox
+    displayName: CI - Terraform SBOX
     dependsOn: ci_config_check
     condition: succeeded('ci_config_check')
     jobs:
-    - template: pipeline/steps/10-terraform-init.yml
+    - template: pipeline/steps/10-terraform.yml
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
         environment: 'sbox-hmi'
