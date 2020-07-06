@@ -38,3 +38,11 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform
       environmentServiceName: ${{ parameters.subscription }}
       commandOptions: -var-file="environment/${{ parameters.environment }}.tfvars" -out=tfplan-${{ parameters.environment }}
+
+  - task: TerraformCLI@0
+    displayName: terraform apply
+    inputs:
+      command: apply
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform/
+      environmentServiceName: ${{ parameters.subscription }}
+      commandOptions: -auto-approve tfplan-${{ parameters.environment }}
