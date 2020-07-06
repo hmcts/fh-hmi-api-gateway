@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "hmi_apim_rg" {
   tags     = var.tags
 }
 
-resource "azurerm_api_management" "apim_service" {
+resource "azurerm_api_management" "hmi-apim" {
   name                = "${var.prefix}-apim-service"
   location            = var.location
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
@@ -25,7 +25,7 @@ resource "azurerm_api_management" "apim_service" {
 resource "azurerm_api_management_api" "fh-hmi-api" {
   name                = "${var.prefix}-api"
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
-  api_management_name = azurerm_api_management.apim_service.name
+  api_management_name = azurerm_api_management.hmi-apim.name
   revision            = "1"
   display_name        = "${var.prefix}-api"
   path                = "future-hearings-api"
@@ -39,7 +39,7 @@ resource "azurerm_api_management_api" "fh-hmi-api" {
 resource "azurerm_api_management_api_policy" "apim-hmi-api-policy" {
 
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
-  api_management_name = azurerm_api_management.apim_service.name
+  api_management_name = azurerm_api_management.hmi-apim.name
   api_name            = azurerm_api_management_api.fh-hmi-api.name
 # Set the policy here
   xml_content = file("${path.module}/template/api-policy.xml")
@@ -49,7 +49,7 @@ resource "azurerm_api_management_api_policy" "apim-hmi-api-policy" {
 resource "azurerm_api_management_product" "product" { # We can decide on a more meaninful product name
   product_id            = "${var.prefix}-product"
   resource_group_name   = azurerm_resource_group.hmi_apim_rg.name
-  api_management_name   = azurerm_api_management.apim_service.name
+  api_management_name   = azurerm_api_management.hmi-apim.name
   display_name          = "${var.prefix}-product"
   subscription_required = true
   approval_required     = false
