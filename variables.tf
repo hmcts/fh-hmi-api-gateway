@@ -11,7 +11,7 @@ variable "tags" {
 
 variable "prefix" {
   description = "The prefix which should be used for all resources"
-  default = "fh_hmi"
+  default = "fh-hmi"
 }
 
 
