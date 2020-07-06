@@ -28,4 +28,4 @@ stages:
         environment: 'sbox-hmi'
         subscription: DTS-SHAREDSERVICES-SBOX #DTS-HMI-SBOX
         resourcegroup: azure-devops-test #rg-HMIv1
-        storageaccount: azuredevopstestsa
+        storageaccount: azuredevopstestsb
