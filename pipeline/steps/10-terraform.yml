@@ -37,4 +37,4 @@ jobs:
       command: plan
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform
       environmentServiceName: ${{ parameters.subscription }}
-      commandOptions: -var-file="environment/${{ parameters.environment }}.tfvars" -out=tfplan-${{ parameters.environment }}
+      commandOptions: -var-file="terraform/environment/${{ parameters.environment }}.tfvars" -out=tfplan-${{ parameters.environment }}
