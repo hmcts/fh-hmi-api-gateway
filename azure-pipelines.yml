@@ -1,63 +1,31 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
 trigger:
-  - master
-pr:
-  - master
-parameters:
-  - name: env
-    displayName: Env
-    type: string
-    default: Choose
-    values:
-      - sbox
+- none
 
 variables:
-  - template: pipeline/variables-common.yaml
-  - ${{ if eq(parameters.env, 'sbox') }}:
-    # Sandbox (sbox)
-    - template: pipeline/variables-sbox.yaml
-    - group: fh-hmi-sbox
-
+  terraformVersion: 0.12.9
 
 stages:
-  - stage: Build
+  - stage: ci_config_check
+    displayName: CI - Terraform test
     jobs:
-      - job: BasicValidation
-        steps:
-          - template: pipeline/steps/tf-install.yaml
-          - task: TerraformCLI@0
-            inputs:
-              command: 'init'
-              commandOptions: '-backend=false'
-          - task: TerraformCLI@0
-            displayName: Validate Terraform
-            inputs:
-              command: 'validate'
-              commandOptions: '-no-color'
-          - script: terraform fmt -check=true
-            displayName: Check Formatting
+    - template: pipeline/steps/01-config-check.yml
+      parameters:
+        terraformVersion: ${{ variables.terraformVersion }}
 
-  - stage: Deploy
-    dependsOn: Build
+  - stage: terraform_sbox
+    displayName: CI - Terraform SBOX
+    dependsOn: ci_config_check
+    condition: succeeded('ci_config_check')
     jobs:
-      - job: DeployToEnv
-        steps:
-
-          - template: pipeline/steps/tf-init.yaml
-            parameters:
-              subscriptionName: $(subscriptionName)
-              product: $(product)
-              locationEng: $(locationEng)
-              location: $(location)
-              env: $(env)
-
-          - template: pipeline/steps/tf-plan.yaml
-            parameters:
-              subscriptionName: $(subscriptionName)
-              env: $(env)
-              location: $(location)
-              product: $(product)
-
-          - template: pipeline/steps/tf-apply.yaml
-            parameters:
-              subscriptionName: $(subscriptionName)
-              env: $(env)
+    - template: pipeline/steps/10-terraform.yml
+      parameters:
+        terraformVersion: ${{ variables.terraformVersion }}
+        environment: 'sbox-hmi'
+        subscription: DTS-HMI-SBOX
+        resourcegroup: rg-HMIv1
+        storageaccount: azuredevopsboxsa
