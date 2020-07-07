@@ -13,12 +13,20 @@ trigger:
       - .gitignore
       - README.md
 
-steps:
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
-  inputs:
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+variables:
+  terraformVersion: 0.12.9
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+stages:
+  - stage: ci_config_check
+    displayName: CI - Config Check
+    jobs:
+    - template: pipeline/steps/01-config-check.yml
+      parameters:
+        terraformVersion: ${{ variables.terraformVersion }}
+  
+  - stage: create_artifacts
+    displayName: CI - Create Artifact
+    dependsOn: ci_config_check
+    condition: succeeded('ci_config_check')
+    jobs:
+    - template: pipeline/steps/02-create-artifact.yml
