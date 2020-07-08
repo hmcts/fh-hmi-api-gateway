@@ -7,12 +7,11 @@ resource "azurerm_api_management_api" "hmi-apim-api" {
   path                = "${var.prefix}-api"
   protocols           = ["https"]
 
-  subscription_required = true
-
-  subscription_key_parameter_names = {
+  subscription_key_parameter_names {
       header = "test"
       query  = "test"
   }
+  
   import {
     content_format = var.open_api_spec_content_format
     content_value  = var.open_api_spec_content_value
