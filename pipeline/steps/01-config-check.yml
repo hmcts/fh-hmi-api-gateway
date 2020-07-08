@@ -17,3 +17,22 @@ jobs:
       targetType: inline
       workingDirectory: $(System.DefaultWorkingDirectory)/terraform
       script: terraform fmt -recursive
+
+  - task: TerraformCLI@0
+    displayName: terraform init
+    inputs:
+      command: init
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
+      backendType: azurerm
+      backendServiceArm: ${{ parameters.subscription }}
+      backendAzureRmResourceGroupName: ${{ parameters.resourcegroup }}
+      backendAzureRmResourceGroupLocation: uksouth
+      backendAzureRmStorageAccountName: ${{ parameters.storageaccount }}
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: hmi/${{ parameters.environment }}.tfstate
+
+  - task: TerraformCLI@0
+    displayName: terraform validate
+    inputs:
+      command: validate
+      workingDirectory: $(System.DefaultWorkingDirectory)/terraform
