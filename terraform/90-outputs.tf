@@ -16,15 +16,15 @@ output "service_public_ip_addresses" {
 output "api_outputs" {
   description = "The IDs, state, and version outputs of the APIs created"
   value = {
-    id             = azurerm_api_management_api.fh-hmi-api.id
-    is_current     = azurerm_api_management_api.fh-hmi-api.is_current
-    is_online      = azurerm_api_management_api.fh-hmi-api.is_online
-    version        = azurerm_api_management_api.fh-hmi-api.version
-    version_set_id = azurerm_api_management_api.fh-hmi-api.version_set_id
+    id             = azurerm_api_management_api.hmi-apim-api.id
+    is_current     = azurerm_api_management_api.hmi-apim-api.is_current
+    is_online      = azurerm_api_management_api.hmi-apim-api.is_online
+    version        = azurerm_api_management_api.hmi-apim-api.version
+    version_set_id = azurerm_api_management_api.hmi-apim-api.version_set_id
   }
 }
 
 output "product_ids" {
   description = "The ID of the Product created"
-  value = azurerm_api_management_product.product.id
+  value = azurerm_api_management_product.hmi-apim-product.id
 }
