@@ -1,1 +1,0 @@
-# fh-hmi-api-gateway
