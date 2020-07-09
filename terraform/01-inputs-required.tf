@@ -12,7 +12,7 @@ variable "open_api_spec_content_format" {
   }
 variable "open_api_spec_content_value" {
   description = "The Content from which the API Definition should be imported. When a content_format of *-link-* is specified this must be a URL, otherwise this must be defined inline."
-  default = "http://conferenceapi.azurewebsites.net/?format=json"
+  default = "https://raw.githubusercontent.com/hmcts/reform-api-docs/master/docs/specs/futrue-h-request-hearing.json"
   }
 variable "tags" {
   description = "The tags to associate with your resources."
