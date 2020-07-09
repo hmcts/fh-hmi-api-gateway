@@ -1,0 +1,6 @@
+prefix = "hmi-apim"
+environment = "sbox"
+location = "uksouth"
+sku_name = "Delevoper_1"
+open_api_spec_content_format = "swagger-link-json"
+open_api_spec_content_value = "http://conferenceapi.azurewebsites.net/?format=json"
