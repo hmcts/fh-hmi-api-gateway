@@ -1,139 +1,32 @@
-parameters:
-  - name: Run_Stage
-    displayName: Stage to Run
-    type: string
-    default: 'Genesis'
-    values:
-      - Genesis
-      - Deploy
-      - Managed_Identity
-      - Bootstrap
-      - Destroy
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
 
-  - name: location
-    displayName: Location
-    type: string
-    default: 'UK South'
-    values:
-      - 'UK South'
-      - 'UK West'
-
-  - name: variablegroup
-    displayName: Variable Group
-    type: string
-    default: ''
-    values:
-      - dts-sharedservices-sbox
-      - dts-management-test
-      - dts-management-sbox
-      - dts-management-nonprod
-
-name: HMCTS Shared Services AKS Azure Infrastructure Deployment Pipeline
 trigger:
-  - none
+  branches:
+    include:
+      - azure-pipelines-ci
+  paths:
+    exclude:
+      - .git
+      - .gitignore
+      - README.md
 
 variables:
-  - group: ${{ parameters.variablegroup }}
-  - name: serviceConnection
-    value: $(subscriptionName)
-  - name: gaserviceconnection
-    value: $(gaconnection)
-
-# Need to clarify with devops/PE team, where are the below marked config files defined (# where is this defined ?)
+  terraformVersion: 0.12.9
 
 stages:
-
-  - stage: Genesis
-    displayName: 'Genesis'
-    condition: contains('${{ parameters.Run_Stage }}', 'Genesis')
+  - stage: ci_config_check
+    displayName: CI - Config Check
     jobs:
-      - job: Genesis
-        steps:
-          - template: pipeline-steps/genesis.yaml # Where is this defined ?
-            parameters:
-              gaserviceconnection: $(gaserviceconnection)
-              service: $(service)
-              environment: $(environment)
-              location: ${{ parameters.location }}
-              tfstatestorage: $(tfstatestorage)
-              stack: $(stack)
-              sptoken: $(sptoken)
-              project: $(project)
-
-  - stage: ReadKeyVault # Do we need this section? As APIM gateways authenticate users mostly using subscription keys or certificate thumbprints.
-    displayName: 'ReadKeyVault'
-    condition: contains('${{ parameters.Run_Stage }}', 'Deploy')
+    - template: pipeline/steps/01-config-check.yml
+      parameters:
+        terraformVersion: ${{ variables.terraformVersion }}
+  
+  - stage: create_artifacts
+    displayName: CI - Create Artifact
+    dependsOn: ci_config_check
+    condition: succeeded('ci_config_check')
     jobs:
-      - job: ReadKeyVault
-        steps:
-          - template: pipeline-steps/keyvault-read.yaml # Where is this  defined ?
-            parameters:
-              serviceConnection: $(serviceConnection)
-              keyvaultName: $(keyvaultName)
-
-  - stage: DeployInfrastructure
-    displayName: 'DeployInfrastructure'
-    condition: contains('${{ parameters.Run_Stage }}', 'Deploy')
-    dependsOn: ReadKeyVault
-    jobs:
-      - job: DeployInfrastructure
-        steps:
-          - template: pipeline-steps/deploy-service.yaml # Where is this defined ?
-            parameters:
-              service: $(service)
-              environment: $(environment)
-              location: ${{ parameters.location }}
-              tfstatestorage: $(tfstatestorage)
-              stack: $(stack)
-              sptoken: $(sptoken)
-              project: $(project)
-
-  - stage: DestroyInfrastructure
-    displayName: 'DestroyInfrastructure'
-    condition: contains('${{ parameters.Run_Stage }}', 'Destroy')
-    jobs:
-      - job: DestroyInfrastructure
-        steps:
-          - template: pipeline-steps/destroy-service.yaml # Where is this defined ?
-            parameters:
-              service: $(service)
-              environment: $(environment)
-              location: ${{ parameters.location }}
-              tfstatestorage: $(tfstatestorage)
-              stack: $(stack)
-              sptoken: $(sptoken)
-              project: $(project)
-
-  - stage: BootStrap
-    displayName: 'BootStrap'
-    condition: contains('${{ parameters.Run_Stage }}', 'Bootstrap')
-    jobs:
-      - job: BootStrap
-        steps:
-          - template: pipeline-steps/bootstrap.yaml # Where is this defined ?
-            parameters:
-              serviceBootstrap: $(serviceBootstrap)
-              environment: $(environment)
-              command: $(command)
-              project: $(project)
-              serviceConnection: $(serviceConnection)
-              keyVaultName: $(keyVaultName)
-              subscriptionName: $(subscriptionName)
-              sptoken: $(sptoken)
-
-  - stage: Managed_Identity # Do we need this section for APIM
-    displayName: 'Managed_Identity'
-    condition: contains('${{ parameters.Run_Stage }}', 'Managed_Identity')
-    jobs:
-      - job: Managed_Identity
-        steps:
-          - template: pipeline-steps/managed_identity.yaml # Where is this defined ?
-            parameters:
-              gaserviceconnection: $(gaserviceconnection)
-              serviceConnection: $(serviceConnection)
-              service: $(service)
-              environment: $(environment)
-              location: ${{ parameters.location }}
-              tfstatestorage: $(tfstatestorage)
-              stack: $(stack)
-              project: $(project)
+    - template: pipeline/steps/02-create-artifact.yml
