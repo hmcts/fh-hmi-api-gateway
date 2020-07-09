@@ -8,7 +8,7 @@ jobs:
     steps:
 
       - task: TerraformInstaller@0
-        displayName: Install Terraform ${{ parameters.terraformVersion }}
+        displayName: Install Terraform ${{ parameters.terraformVersion }}/terraform
         inputs:
           terraformVersion: ${{ parameters.terraformVersion }}
 
@@ -16,7 +16,7 @@ jobs:
         displayName: terraform init
         inputs:
           command: init
-          workingDirectory: $(System.DefaultWorkingDirectory)
+          workingDirectory: $(System.DefaultWorkingDirectory)/terraform
           backendType: azurerm
           backendServiceArm: ${{ parameters.subscription }}
           backendAzureRmResourceGroupName: ${{ parameters.resourcegroup }}
@@ -29,13 +29,13 @@ jobs:
         displayName: terraform validate
         inputs:
           command: validate
-          workingDirectory: $(System.DefaultWorkingDirectory)
+          workingDirectory: $(System.DefaultWorkingDirectory)/terraform
 
       - task: TerraformCLI@0
         displayName: terraform plan
         inputs:
           command: plan
-          workingDirectory: $(System.DefaultWorkingDirectory)
+          workingDirectory: $(System.DefaultWorkingDirectory)/terraform
           environmentServiceName: ${{ parameters.subscription }}
           commandOptions: -var-file="environment/${{ parameters.environment }}.tfvars" -out=tfplan-${{ parameters.environment }}
 
@@ -43,6 +43,6 @@ jobs:
         displayName: terraform apply
         inputs:
           command: apply
-          workingDirectory: $(System.DefaultWorkingDirectory)
+          workingDirectory: $(System.DefaultWorkingDirectory)/terraform
           environmentServiceName: ${{ parameters.subscription }}
           commandOptions: -auto-approve tfplan-${{ parameters.environment }}
