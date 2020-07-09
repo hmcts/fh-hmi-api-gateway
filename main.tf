@@ -46,6 +46,26 @@ resource "azurerm_api_management_api_policy" "apim-hmi-api-policy" {
 
 }
 
+resource "azurerm_api_management_api_operation" "apim-hmi-request-hearing" {
+  operation_id        = "request-hearing"
+  api_name            = azurerm_api_management_api.fh-hmi-api.name
+  api_management_name = azurerm_api_management.hmi-apim.name
+  resource_group_name = azurerm_resource_group.hmi_apim_rg.name
+  method              = "POST"
+  url_template        = "/hearings"
+}
+
+resource "azurerm_api_management_api_policy" "apim-hmi-api-hearings-policy" {
+
+  resource_group_name = azurerm_resource_group.hmi_apim_rg.name
+  api_management_name = azurerm_api_management.hmi-apim.name
+  api_name            = azurerm_api_management_api.fh-hmi-api.name
+  operation_id        = azurerm_api_management_api_operation.apim-hmi-request-hearing.operation_id
+  # Set the policy here
+  xml_content = file("${path.module}/template/api-request-hearings-policy.xml")
+
+}
+
 resource "azurerm_api_management_product" "product" { # We can decide on a more meaninful product name
   product_id            = "${var.prefix}-product"
   resource_group_name   = azurerm_resource_group.hmi_apim_rg.name
