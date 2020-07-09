@@ -1,13 +1,7 @@
-resource "azurerm_api_management_api_policy" "hmi-apim-api-policy" {
-  api_name            = azurerm_api_management_api.hmi-apim-api.name
-  api_management_name = azurerm_api_management.hmi-apim.name
+resource "azurerm_api_management_api_policy" "hmi_apim_api_policy" {
+  api_name            = azurerm_api_management_api.hmi_apim_api.name
+  api_management_name = azurerm_api_management.hmi_apim.name
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
 
-  xml_content = <<XML
-<policies>
-  <inbound>
-    <mock-response status-code="200" content-type="application/json" />
-  </inbound>
-</policies>
-XML
+  xml_content = file("../template/api-policy.xml")
 }

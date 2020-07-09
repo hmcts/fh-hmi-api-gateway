@@ -4,28 +4,29 @@
 # https://aka.ms/yaml
 
 trigger:
-- none
+  branches:
+    include:
+      - azure-pipelines-ci
+  paths:
+    exclude:
+      - .git
+      - .gitignore
+      - README.md
 
 variables:
   terraformVersion: 0.12.9
 
 stages:
   - stage: ci_config_check
-    displayName: CI - Terraform test
+    displayName: CI - Config Check
     jobs:
     - template: pipeline/steps/01-config-check.yml
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
   
-  - stage: terraform_sbox
-    displayName: CI - Terraform SBOX
+  - stage: create_artifacts
+    displayName: CI - Create Artifact
     dependsOn: ci_config_check
     condition: succeeded('ci_config_check')
     jobs:
-    - template: pipeline/steps/10-terraform.yml
-      parameters:
-        terraformVersion: ${{ variables.terraformVersion }}
-        environment: 'sbox-hmi'
-        subscription: DTS-SHAREDSERVICES-SBOX
-        resourcegroup: azure-devops-test
-        storageaccount: azuredevopstestsa
+    - template: pipeline/steps/02-create-artifact.yml
