@@ -19,3 +19,4 @@ variable "tags" {
       purpose   = "PoC"
   }
 }
+variable "service_url" {}

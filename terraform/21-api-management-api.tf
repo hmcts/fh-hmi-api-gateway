@@ -7,7 +7,7 @@ resource "azurerm_api_management_api" "hmi_apim_api" {
   path                = "${var.prefix}-api"
   protocols           = ["http", "https"]
 
-  service_url = var.open_api_spec_content_value
+  service_url = var.service_url
   
   import {
     content_format = var.open_api_spec_content_format
