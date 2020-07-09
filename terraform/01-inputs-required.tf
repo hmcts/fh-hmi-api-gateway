@@ -1,4 +1,7 @@
-variable "prefix" {}
+variable "prefix" {
+  description = "The prefix which should be used for all resources"
+  default = "fh-hmi"
+}
 variable "environment" {}
 variable "location" {
   default = "uksouth"
