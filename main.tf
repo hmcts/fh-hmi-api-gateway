@@ -33,7 +33,7 @@ resource "azurerm_api_management_api" "fh-hmi-api" {
   description         = "<API Description>"# will add in accordance with the backend API which we are mocking.
   import {
     content_format = var.open_api_spec_content_format
-    content_value  = var.open_api_spec_content_value
+    content_value  = file("${path.module}/template/request-hearing-api.json")
   }
 }
 resource "azurerm_api_management_api_policy" "apim-hmi-api-policy" {
