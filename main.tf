@@ -55,8 +55,7 @@ resource "azurerm_api_management_api_operation" "apim-hmi-request-hearing" {
   url_template        = "/hearings"
 }
 
-resource "azurerm_api_management_api_policy" "apim-hmi-api-hearings-policy" {
-
+resource "azurerm_api_management_api_operation_policy" "apim-hmi-api-hearings-policy" {
   resource_group_name = azurerm_resource_group.hmi_apim_rg.name
   api_management_name = azurerm_api_management.hmi-apim.name
   api_name            = azurerm_api_management_api.fh-hmi-api.name
