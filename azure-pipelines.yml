@@ -6,12 +6,7 @@
 trigger:
   branches:
     include:
-      - azure-pipelines-ci
-  paths:
-    exclude:
-      - .git
-      - .gitignore
-      - README.md
+      - fh-hmi-api-prototype
 
 variables:
   terraformVersion: 0.12.9
