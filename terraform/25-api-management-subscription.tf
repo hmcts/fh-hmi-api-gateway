@@ -13,5 +13,6 @@ resource "azurerm_api_management_subscription" "hmi_apim_subscription" {
   resource_group_name = azurerm_api_management.hmi_apim.resource_group_name
   user_id             = azurerm_api_management_user.hmi_apim_user.id
   product_id          = azurerm_api_management_product.hmi_apim_product.id
-  display_name        = "Parser API"
+  display_name        = "Test Subscription"
+  state               = "active"
 }
