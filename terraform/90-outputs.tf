@@ -28,3 +28,9 @@ output "product_ids" {
   description = "The ID of the Product created"
   value = azurerm_api_management_product.hmi_apim_product.id
 }
+
+output "subscription_key" {
+  description = "Subscription Primary Key"
+  value       = azurerm_api_management_subscription.hmi_apim_subscription.primary_key
+  sensitive   = true
+}
