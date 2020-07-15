@@ -1,7 +1,7 @@
 prefix = "hmi-apim"
 environment = "sbox"
 location = "uksouth"
-sku_name = "Delevoper_1"
+apim_sku_name = "Delevoper_1"
 publisher_name = "HMCTS HMI"
 publisher_email = "sandbox@hmcts.placeholder"
 protocols = ["http", "https"]

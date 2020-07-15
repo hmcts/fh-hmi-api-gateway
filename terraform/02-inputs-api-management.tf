@@ -4,7 +4,7 @@ variable "publisher_name" {
 variable "publisher_email" {
   description = "The email of publisher/company."
 }
-variable "sku_name" {
+variable "apim_sku_name" {
   description = "Desired SKU for the API Management"
 }
 variable "protocols" {
