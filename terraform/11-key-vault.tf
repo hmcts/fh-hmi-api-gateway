@@ -3,8 +3,6 @@ resource "azurerm_key_vault" "hmi_apim_kv" {
     location                 = var.location
     resource_group_name      = azurerm_resource_group.hmi_apim_rg.name
     tenant_id                = var.principal_tenant_id
-    soft_delete_enabled      = var.soft_delete_enabled
-    purge_protection_enabled = var.purge_protection_enabled
     sku_name                 = var.kv_sku_name
     tags                     = var.tags
 }
