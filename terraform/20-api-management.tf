@@ -5,5 +5,5 @@ resource "azurerm_api_management" "hmi_apim" {
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
 
-  sku_name = "Delevoper_1"
+  sku_name = "${var.apim_sku_name}_${var.apim_sku_capacity}"
 }

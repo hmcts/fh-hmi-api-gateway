@@ -7,6 +7,9 @@ variable "publisher_email" {
 variable "apim_sku_name" {
   description = "Desired SKU for the API Management"
 }
+variable "apim_sku_capacity" {
+  description = "Desired number of Units of SKU for the API Management"
+}
 variable "protocols" {
   description = "A list of protocols the operations in this API can be invoked. Possible values are http and https."
 }
