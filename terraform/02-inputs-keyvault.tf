@@ -20,8 +20,7 @@ variable "certificate_permissions" {
     description = "The permissions (list) for the creating principal accessing certificates."
     default = [
         "get",
-        "list",
-        "set"
+        "list"
     ]
 }
 variable "key_permissions" {
@@ -29,7 +28,7 @@ variable "key_permissions" {
     default = [
         "get",
         "list",
-        "set"
+        "create"
     ]
 }
 variable "storage_permissions" {
