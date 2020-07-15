@@ -1,7 +1,7 @@
 prefix = "hmi-apim"
 environment = "test"
 location = "uksouth"
-apim_sku_name = "Delevoper"
+apim_sku_name = "Developer"
 apim_sku_capacity = "1"
 publisher_name = "HMCTS HMI"
 publisher_email = "test@hmcts.placeholder"
