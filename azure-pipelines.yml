@@ -9,14 +9,10 @@ trigger:
       - fh-hmi-api-prototype
 
 parameters:
-  - name: env
-    displayName: Env
+  - name: environment
+    displayName: Environment
     type: string
-    default: Choose
-    values:
-      - sbox
-      - stg
-      - prod
+    default: 'sbox,test'
 
 stages:
   - stage: ci_config_check
