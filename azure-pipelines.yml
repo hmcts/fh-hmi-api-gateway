@@ -8,8 +8,15 @@ trigger:
     include:
       - fh-hmi-api-prototype
 
-variables:
-  terraformVersion: 0.12.9
+parameters:
+  - name: env
+    displayName: Env
+    type: string
+    default: Choose
+    values:
+      - sbox
+      - stg
+      - prod
 
 stages:
   - stage: ci_config_check
