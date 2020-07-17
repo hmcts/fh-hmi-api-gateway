@@ -6,12 +6,7 @@
 trigger:
   branches:
     include:
-      - azure-pipelines-ci
-  paths:
-    exclude:
-      - .git
-      - .gitignore
-      - README.md
+      - fh-hmi-
 
 variables:
   terraformVersion: 0.12.9
@@ -23,20 +18,6 @@ stages:
     - template: pipeline/steps/01-config-check.yml
       parameters:
         terraformVersion: ${{ variables.terraformVersion }}
-
-
-  - stage: terraform_sbox
-    displayName: CI - Terraform SandBox
-    dependsOn: ci_config_check
-    condition: succeeded('ci_config_check')
-    jobs:
-    - template: pipeline/steps/10-terraform.yml
-      parameters:
-        terraformVersion: ${{ variables.terraformVersion }}
-        environment: 'sbox-hmi'
-        subscription: DTS-SHAREDSERVICES-SBOX #DTS-HMI-SBOX
-        resourcegroup: azure-devops-test #rg-HMIv1
-        storageaccount: azuredevopstestsa
   
   - stage: create_artifacts
     displayName: CI - Create Artifact
