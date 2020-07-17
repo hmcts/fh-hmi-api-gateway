@@ -6,13 +6,10 @@
 trigger:
   branches:
     include:
-      - fh-hmi-api-prototype
+      - fh-hmi-
 
-parameters:
-  - name: environment
-    displayName: Environment
-    type: string
-    default: 'sbox,test'
+variables:
+  terraformVersion: 0.12.9
 
 stages:
   - stage: ci_config_check
